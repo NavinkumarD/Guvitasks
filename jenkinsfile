@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    stages {
+        stage('SCM') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Arvind22cse/Final_jerkins.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('build to images') {
+            steps {
+                script {
+                    sh 'docker build -t arvindm2004/webapp1 .'
+                }
+            }
+        }
+        stage('push to hub') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker_cred', toolName: 'docker', url: 'https://index.docker.io/v1/') {
+                              sh 'docker push arvindm2004/webapp1'
+                    }
+                }
+            }
+        }
+        
+    }
+}
