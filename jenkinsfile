@@ -10,13 +10,13 @@ pipeline {
 
         stage('Build') {  
             steps {
-                bat 'mvn clean install'  // Use 'sh' if running on Linux
+                sh 'mvn clean install'  // Use 'sh' if running on Linux
             }
         }
 
         stage('Build Docker Image') {  
             steps {
-                bat 'docker build -t 22csl258/mysimplewebapplication .'  
+                sh 'docker build -t 22csl258/mysimplewebapplication .'  
             }
         }
 
