@@ -1,32 +1,33 @@
 pipeline {
     agent any
+
     stages {
         stage('SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/Arvind22cse/Final_jerkins.git'
+                git branch: 'main', url: 'https://github.com/NavinkumarD/Guvitasks.git'
             }
         }
-        stage('Build') {
+
+        stage('Build') {  
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean install'  // Use 'sh' if running on Linux
             }
         }
-        stage('build to images') {
+
+        stage('Build Docker Image') {  
+            steps {
+                bat 'docker build -t 22csl258/mysimplewebapplication .'  
+            }
+        }
+
+        stage('Push Docker Image') {  
             steps {
                 script {
-                    sh 'docker build -t arvindm2004/webapp1 .'
-                }
-            }
-        }
-        stage('push to hub') {
-            steps {
-                script {
-                    withDockerRegistry(credentialsId: 'docker_cred', toolName: 'docker', url: 'https://index.docker.io/v1/') {
-                              sh 'docker push arvindm2004/webapp1'
+                    withDockerRegistry(credentialsId: 'Navin', url: 'https://index.docker.io/v1/') {
+                        bat 'docker push 22csl258/mysimplewebapplication'
                     }
                 }
             }
         }
-        
     }
 }
